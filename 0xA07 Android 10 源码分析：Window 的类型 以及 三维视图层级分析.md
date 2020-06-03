@@ -105,7 +105,7 @@ public static class LayoutParams extends ViewGroup.LayoutParams implements Parce
 | LAST_SYSTEM_WINDOW | 2999 | 系统 Window 的结束值 |
 
 1. 应用程序 Window（Application Window）：它的区间范围 [1,99]，例如 Activity
-**frameworks/base/core/java/com/android/internal/policy/DecorView.java**
+**frameworks/base/core/java/android/view/WindowManager#LayoutParams.java**
 
 ```
 // 应用程序 Window 的开始值
@@ -138,7 +138,7 @@ public static final int LAST_APPLICATION_WINDOW = 99;
 
 
 2. 子 Window（Sub Windwow）：它的区间范围 [1000,1999]，这些 Window 按照 Z-order 顺序依附于父 Window 上（关于 Z-order 后文有介绍），并且他们的坐标空间相对于父 Window 的，例如：PopupWindow
-**frameworks/base/core/java/android/widget/PopupWindow.java**
+**frameworks/base/core/java/android/view/WindowManager#LayoutParams.java**
 
 ```
 // 子 Window 类型的开始值
@@ -178,7 +178,7 @@ public static final int LAST_SUB_WINDOW = 1999;
 | LAST_SUB_WINDOW | 子 Window 的结束值 |
  
 * 系统 Window（System Window）: 它区间范围 [2000,2999]，例如：Toast，输入法窗口，系统音量条窗口，系统错误窗口
-**frameworks/base/services/core/java/com/android/server/am/BaseErrorDialog.java**
+**frameworks/base/core/java/android/view/WindowManager#LayoutParams.java**
 
 ```
 // 系统Window类型的开始值
@@ -683,15 +683,27 @@ Window 的软键盘模式表示 Window 软键盘输入区域的显示模式
 
 ## 结语
 
-## 致力于分享一系列 Android 系统源码、逆向分析、算法、翻译、Jetpack  源码相关的文章，如果你同我一样喜欢研究 Android 源码，可以关注我，如果你喜欢这篇文章欢迎 star，一起来学习，期待与你一起成长
+致力于分享一系列 Android 系统源码、逆向分析、算法、翻译、Jetpack  源码相关的文章，如果你同我一样喜欢研究 Android 源码，可以关注我，如果你喜欢这篇文章欢迎 star，一起来学习，期待与你一起成长
 
-## **算法**
+## 结语
 
-## 由于 LeetCode 的题库庞大，每个分类都能筛选出数百道题，由于每个人的精力有限，不可能刷完所有题目，因此我按照经典类型题目去分类、和题目的难易程度去排序
+致力于分享一系列 Android 系统源码、逆向分析、算法、翻译、Jetpack  源码相关的文章，如果你同我一样喜欢研究 Android 源码，可以关注我，如果你喜欢这篇文章欢迎 star，一起来学习，期待与你一起成长
 
-## * 数据结构： 数组、栈、队列、字符串、链表、树……
-## * 算法： 查找算法、搜索算法、位运算、排序、数学、……
+**算法**
 
-## 每道题目都会用 Java 和 kotlin 去实现，并且每道题目都有解题思路，如果你同我一样喜欢算法、LeetCode，可以关注我 GitHub 上的 LeetCode 题解：[Leetcode-Solutions-with-Java-And-Kotlin](https://github.com/hi-dhl/Leetcode-Solutions-with-Java-And-Kotlin)，一起来学习，期待与你一起成长
+由于 LeetCode 的题库庞大，每个分类都能筛选出数百道题，由于每个人的精力有限，不可能刷完所有题目，因此我按照经典类型题目去分类、和题目的难易程度去排序
+
+* 数据结构： 数组、栈、队列、字符串、链表、树……
+* 算法： 查找算法、搜索算法、位运算、排序、数学、……
+
+每道题目都会用 Java 和 kotlin 去实现，并且每道题目都有解题思路，如果你同我一样喜欢算法、LeetCode，可以关注我 GitHub 上的 LeetCode 题解：[Leetcode-Solutions-with-Java-And-Kotlin](https://github.com/hi-dhl/Leetcode-Solutions-with-Java-And-Kotlin)，一起来学习，期待与你一起成长
+
+
+
+
+
+
+
+
 
 
