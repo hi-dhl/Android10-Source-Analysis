@@ -39,6 +39,7 @@ PackageInstaller 是系统内置的应用程序，用于安装和卸载应用<br
 ### 查看 PackageInstaller 源码方式
 
 * [AOSP-PackageInstaller](https://github.com/hi-dhl/AOSP-PackageInstaller/tree/android-10.0.0_r14): 包含了安装器 PackageInstaller(7.1.2、8.1.0、9.0.0、10.0.0) 的源码，可以切换分之查看，跟随 Android 版本更新，你永远可以看到最新的源代码
+
 ![source](http://cdn.51git.cn/2020-02-29-source.png)
 
 * [aospxref](http://aospxref.com/)：这是一个在线查看 Android 源码网站，服务器在阿里云访问速度很快，文末有关这个网站的介绍
