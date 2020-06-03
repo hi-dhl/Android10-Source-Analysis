@@ -169,14 +169,14 @@ public static final int LAST_SUB_WINDOW = 1999;
 ```
 
 | <div style="width: 240pt">类型 </div> | 备注 |
-| --- | --- | --- |
+| --- | --- |
 | FIRST_SUB_WINDOW | 子 Window 的开始值 |
 | TYPE_APPLICATION_PANEL | 应用程序 Window 顶部的面板，这些 Window 出现在其附加 Window 的顶部 |
 | TYPE_APPLICATION_MEDIA | 用于显示媒体(如视频)的 Window，这些 Window 出现在其附加 Window 的后面 |
 | TYPE_APPLICATION_SUB_PANEL | 应用程序 Window 顶部的子面板，这些 Window 出现在其附加 Window 和任何Window的顶部 |
 | TYPE_APPLICATION_ATTACHED_DIALOG | 当前Window的布局和顶级Window布局相同时，不能作为子代的容器 |
 | TYPE_APPLICATION_MEDIA_OVERLAY |  用显示媒体 Window 覆盖顶部的 Window， 这是系统隐藏的 API |
-| TYPE_APPLICATION_ABOVE_SUB_PANEL | 子面板在应用程序Window的顶部，这些Window显示在其附加Window的顶部， 这是系统隐藏的 API |
+| TYPE_APPLICATION_ABOVE_SUB_PANEL | 子面板在应用程序Window的顶部，这些Window显示在其附加Window的顶部， 这是系统隐藏的 API|
 | LAST_SUB_WINDOW | 子 Window 的结束值 |
  
 * 系统 Window（System Window）: 它区间范围 [2000,2999]，例如：Toast，输入法窗口，系统音量条窗口，系统错误窗口
@@ -521,10 +521,8 @@ public static final int FLAG_SHOW_WALLPAPER = 0x00100000;
 | FLAG_ALLOW_LOCK_WHILE_SCREEN_ON | 当 Window 可见时允许锁屏 |
 | FLAG_DIM_BEHIND | Window 后面的内容都变暗 |
 | FLAG_BLUR_BEHIND | API 已经过时，Window 后面的内容都变模糊 |
-| FLAG_NOT_FOCUSABLE | Window 不能获得输入焦点，即不接受任何按键或按钮事件，例如该 Window 上 有 EditView，点击 EditView 是 不会弹出软键盘的<br/> Window 范围外的事件依旧为原窗口处理；例如点击该窗口外的view，依然会有响应。另外只要设置了此Flag，都将会启用FLAG_NOT_TOUCH_MODAL
- |
-| FLAG_NOT_TOUCH_MODAL | 设置了该 Flag,将 Window 之外的按键事件发送给后面的 Window 处理, 而自己只会处理 Window 区域内的触摸事件 <br/> Window 之外的 view 也是可以响应 touch 事件
- |
+| FLAG_NOT_FOCUSABLE | Window 不能获得输入焦点，即不接受任何按键或按钮事件，例如该 Window 上 有 EditView，点击 EditView 是 不会弹出软键盘的，Window 范围外的事件依旧为原窗口处理；例如点击该窗口外的view，依然会有响应。另外只要设置了此Flag，都将会启用FLAG_NOT_TOUCH_MODAL |
+| FLAG_NOT_TOUCH_MODAL | 设置了该 Flag,将 Window 之外的按键事件发送给后面的 Window 处理, 而自己只会处理 Window 区域内的触摸事件，Window 之外的 view 也是可以响应 touch 事件|
 | FLAG_NOT_TOUCHABLE | 设置了该Flag，表示该 Window 将不会接受任何 touch 事件，例如点击该 Window 不会有响应，只会传给下面有聚焦的窗口 |
 | FLAG_KEEP_SCREEN_ON | 只要 Window 可见时屏幕就会一直亮着 |
 | FLAG_LAYOUT_IN_SCREEN | 允许 Window 占满整个屏幕 |
@@ -559,12 +557,13 @@ getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHIN
 // 不会改变软键盘的状态
 public static final int SOFT_INPUT_STATE_UNCHANGED = 1;
 
-// 当用户进入该窗口时，软键盘默认隐藏
+// 当用户进入该窗口时，隐藏软键盘
 public static final int SOFT_INPUT_STATE_HIDDEN = 2;
 
-// 当窗口获取焦点时，软键盘总是被隐藏
+// 当窗口获取焦点时，隐藏软键盘
 public static final int SOFT_INPUT_STATE_ALWAYS_HIDDEN = 3;
 
+// 当用户进入窗口时，显示软键盘
 public static final int SOFT_INPUT_STATE_VISIBLE = 4;
 
 // 当窗口获取焦点时，显示软键盘
@@ -593,10 +592,10 @@ public static final int SOFT_INPUT_ADJUST_NOTHING = 0x30;
 | <div style="width: 210pt"> model </div>  | 备注 |
 | --- | --- |
 | SOFT_INPUT_STATE_UNCHANGED | 不会改变软键盘的状态 |
-| SOFT_INPUT_STATE_HIDDEN | 当用户进入该窗口时，软键盘默认隐藏 |
-| SOFT_INPUT_STATE_ALWAYS_HIDDEN | 当窗口获取焦点时，软键盘总是被隐藏 |
+| SOFT_INPUT_STATE_VISIBLE | 当用户进入窗口时，显示软键盘  |
+| SOFT_INPUT_STATE_HIDDEN | 当用户进入该窗口时，隐藏软键盘 |
+| SOFT_INPUT_STATE_ALWAYS_HIDDEN | 当窗口获取焦点时，隐藏软键盘 |
 | SOFT_INPUT_STATE_ALWAYS_VISIBLE | 当窗口获取焦点时，显示软键盘 |
-| SOFT_INPUT_STATE_VISIBLE |   |
 | SOFT_INPUT_MASK_ADJUST  | window 会调整大小以适应软键盘窗口  |
 | SOFT_INPUT_ADJUST_UNSPECIFIED | 没有指定状态,系统会选择一个合适的状态或依赖于主题的设置 |
 | SOFT_INPUT_ADJUST_RESIZE | 1. 当软键盘弹出时，窗口会调整大小,例如点击一个EditView，整个layout都将平移可见且处于软件盘的上方<br/> 2. 同样的该模式不能与SOFT_INPUT_ADJUST_PAN结合使用<br/> 3. 如果窗口的布局参数标志包含FLAG_FULLSCREEN，则将忽略这个值，窗口不会调整大小，但会保持全屏|
@@ -644,10 +643,8 @@ Window 的 flag 用于控制 Window 的显示，flag 的参数如下所示：
 | FLAG_ALLOW_LOCK_WHILE_SCREEN_ON | 当 Window 可见时允许锁屏 |
 | FLAG_DIM_BEHIND | Window 后面的内容都变暗 |
 | FLAG_BLUR_BEHIND | API 已经过时，Window 后面的内容都变模糊 |
-| FLAG_NOT_FOCUSABLE | Window 不能获得输入焦点，即不接受任何按键或按钮事件，例如该 Window 上 有 EditView，点击 EditView 是 不会弹出软键盘的<br/> Window 范围外的事件依旧为原窗口处理；例如点击该窗口外的view，依然会有响应。另外只要设置了此Flag，都将会启用FLAG_NOT_TOUCH_MODAL
- |
-| FLAG_NOT_TOUCH_MODAL | 设置了该 Flag,将 Window 之外的按键事件发送给后面的 Window 处理, 而自己只会处理 Window 区域内的触摸事件 <br/> Window 之外的 view 也是可以响应 touch 事件
- |
+| FLAG_NOT_FOCUSABLE | Window 不能获得输入焦点，即不接受任何按键或按钮事件，例如该 Window 上 有 EditView，点击 EditView 是 不会弹出软键盘的，Window 范围外的事件依旧为原窗口处理；例如点击该窗口外的view，依然会有响应。另外只要设置了此Flag，都将会启用FLAG_NOT_TOUCH_MODAL |
+| FLAG_NOT_TOUCH_MODAL | 设置了该 Flag,将 Window 之外的按键事件发送给后面的 Window 处理, 而自己只会处理 Window 区域内的触摸事件，Window 之外的 view 也是可以响应 touch 事件|
 | FLAG_NOT_TOUCHABLE | 设置了该Flag，表示该 Window 将不会接受任何 touch 事件，例如点击该 Window 不会有响应，只会传给下面有聚焦的窗口 |
 | FLAG_KEEP_SCREEN_ON | 只要 Window 可见时屏幕就会一直亮着 |
 | FLAG_LAYOUT_IN_SCREEN | 允许 Window 占满整个屏幕 |
@@ -667,10 +664,10 @@ Window 的软键盘模式表示 Window 软键盘输入区域的显示模式
 | <div style="width: 210pt"> model </div>  | 备注 |
 | --- | --- |
 | SOFT_INPUT_STATE_UNCHANGED | 不会改变软键盘的状态 |
-| SOFT_INPUT_STATE_HIDDEN | 当用户进入该窗口时，软键盘默认隐藏 |
-| SOFT_INPUT_STATE_ALWAYS_HIDDEN | 当窗口获取焦点时，软键盘总是被隐藏 |
+| SOFT_INPUT_STATE_VISIBLE | 当用户进入窗口时，显示软键盘  |
+| SOFT_INPUT_STATE_HIDDEN | 当用户进入该窗口时，隐藏软键盘 |
+| SOFT_INPUT_STATE_ALWAYS_HIDDEN | 当窗口获取焦点时，隐藏软键盘 |
 | SOFT_INPUT_STATE_ALWAYS_VISIBLE | 当窗口获取焦点时，显示软键盘 |
-| SOFT_INPUT_STATE_VISIBLE |   |
 | SOFT_INPUT_MASK_ADJUST  | window 会调整大小以适应软键盘窗口  |
 | SOFT_INPUT_ADJUST_UNSPECIFIED | 没有指定状态,系统会选择一个合适的状态或依赖于主题的设置 |
 | SOFT_INPUT_ADJUST_RESIZE | 1. 当软键盘弹出时，窗口会调整大小,例如点击一个EditView，整个layout都将平移可见且处于软件盘的上方<br/> 2. 同样的该模式不能与SOFT_INPUT_ADJUST_PAN结合使用<br/> 3. 如果窗口的布局参数标志包含FLAG_FULLSCREEN，则将忽略这个值，窗口不会调整大小，但会保持全屏|
