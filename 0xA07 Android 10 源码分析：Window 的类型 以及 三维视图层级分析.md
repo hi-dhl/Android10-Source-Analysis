@@ -697,7 +697,6 @@ Window 的软键盘模式表示 Window 软键盘输入区域的显示模式
 ## 参考文献
 
 * [https://developer.android.google.cn/.../WindowManager.LayoutParams](https://developer.android.google.cn/reference/android/view/WindowManager.LayoutParams.html?hl=en#summary)
-* [https://juejin.im/post/5d20658d6fb9a07ecd3d7e08](https://juejin.im/post/5d20658d6fb9a07ecd3d7e08)
 * [https://www.jianshu.com/p/3528255475a2](https://www.jianshu.com/p/3528255475a2)
 
 ## 结语
