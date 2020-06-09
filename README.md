@@ -1,4 +1,10 @@
-# Android 10 Source Analysis
+#  <p align="center"> Android 10 Source Analysis </p>
+
+<p align="center"> 致力于分享一系列 Android 系统源码、逆向分析、算法、翻译、Jetpack  源码相关的文章，如果你同我一样喜欢研究 Android 源码，可以关注我，一起来学习，期待与你一起成长 </p>
+
+<p align="center">
+<a href="https://github.com/hi-dhl"><img src="https://img.shields.io/badge/GitHub-HiDhl-4BC51D.svg?style=flat"></a> <img src="https://img.shields.io/badge/language-Java | Kotlin-orange.svg"/> <img src="https://img.shields.io/badge/platform-android-lightgrey.svg"/>
+</p>
 
 ![Android10](http://cdn.51git.cn/2020-06-04-15911987213302.jpg)
 
