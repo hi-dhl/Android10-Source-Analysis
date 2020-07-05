@@ -38,10 +38,12 @@ Android 是一个非常庞大的系统，了解系统源码，不仅有助于分
 * [0xA06 Android 10 源码分析：WindowManager 视图绑定以及体系结构](https://github.com/hi-dhl/Android10-Source-Analysis/blob/master/0xA06%20Android%2010%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%9AWindowManager%20%E8%A7%86%E5%9B%BE%E7%BB%91%E5%AE%9A%E4%BB%A5%E5%8F%8A%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.md)
 * [0xA07 Android 10 源码分析：Window 的类型 以及 三维视图层级分析](https://github.com/hi-dhl/Android10-Source-Analysis/blob/master/0xA07%20Android%2010%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%9AWindow%20%E7%9A%84%E7%B1%BB%E5%9E%8B%20%E4%BB%A5%E5%8F%8A%20%E4%B8%89%E7%BB%B4%E8%A7%86%E5%9B%BE%E5%B1%82%E7%BA%A7%E5%88%86%E6%9E%90.md)
 
+> 正在建立一个最全、最新的 AndroidX Jetpack 相关组件的实战项目 以及 相关组件原理分析文章，目前已经包含了 App Startup、Paging3、Hilt 等等，正在逐渐增加其他 Jetpack 新成员，仓库持续更新，可以前去查看：[AndroidX-Jetpack-Practice](https://github.com/hi-dhl/AndroidX-Jetpack-Practice)。
+
 
 另外我还在做另外一件事情，算法题库的归纳和总结，在大学期间经常参加一些比赛如蓝桥杯、ACM 等等，因此无论在面试还是工作都带来很多帮助，知道数据结构和算法的重要性，也是面试的入门门槛之一
 
-**算法题库的归纳和总结**
+### 算法题库的归纳和总结
 
 由于 LeetCode 的题库庞大，每个分类都能筛选出数百道题，由于每个人的精力有限，不可能刷完所有题目，因此我按照经典类型题目去分类、和题目的难易程度去排序
 
@@ -50,4 +52,7 @@ Android 是一个非常庞大的系统，了解系统源码，不仅有助于分
 
 每道题目都会用 Java 和 kotlin 去实现，并且每道题目都有解题思路，如果你同我一样喜欢算法、LeetCode，可以关注我 GitHub 上的 LeetCode 题解：[Leetcode-Solutions-with-Java-And-Kotlin](https://github.com/hi-dhl/Leetcode-Solutions-with-Java-And-Kotlin)，一起来学习，期待与你一起成长
 
+### 精选国外的技术文章
+
+目前正在整理和翻译一系列精选国外的技术文章，不仅仅是翻译，很多优秀的英文技术文章提供了很好思路和方法，每篇文章都会有**译者思考**部分，对原文的更加深入的解读，可以关注我 GitHub 上的 [Technical-Article-Translation](https://github.com/hi-dhl/Technical-Article-Translation)。
 
