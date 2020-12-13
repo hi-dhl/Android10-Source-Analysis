@@ -8,25 +8,37 @@
 > * 分支：android-10.0.0_r14
 > * 全文阅读大概 5 分钟
 
-在 Android Studio 中直接点击 Run ‘app’ 就可以在 build/outputs/apk 生成可以在 android 设备中安装的 APK 文件，那么 APK 生成的过程是怎么样的呢？<br/>
+APK 的文件可以分为 **代码** 和 **资源** 两部分，接下来源码分析系列，会完全围绕着，这两部分内容来分析，而今天这篇文章是 Android 10 源码分析系列的第 1 篇。
 
-APK 文件大概可以分为两个部分：代码和资源，所以打包的也分为代码和资源两个部分，我们可以根据 [Google提供的流程图](https://developer.android.com/studio/build/index.html?hl=zh-cn#build-process) 来具体了解一个 APK 的构建过程
+本文预计会分为两篇文章来分析 APK 是如何生成的：
+
+* 从原理的角度分析 APK 是如何生成的
+* 如果不使用 AndroidStudio 如何生成 APK
+
+我们很多时候都是直接点击 Android Studio 中直接点击 `Run ‘app’`，就可以在 `build/outputs/apk` 目录下生成 APK 文件，那么 Android Studio 是如何做到的呢？
+
+接下来我们一起来分析一下 APK 的构建过程，APK 的文件可以分为 **代码** 和 **资源** 两部分，那么构建 APK 的过程中，也会对 **代码** 和 **资源** 做分别的处理。
+
+我们先来看看 **Google提供的流程图** 大概了解一下 APK 的构建过程
+
 
 **新版构建流程图**
 
 ![15813472877044-w350](http://cdn.51git.cn/2020-02-12-15813472877044.png)
 
 
-APK 打包的内容主要有：应用模块也就是自己开发的用到的源代码、资源文件、aidl 接口文件，还有就是依赖模块即源代码用到的第三方依赖库如：aar、jar、so 文件<br/>
+APK 打包的内容主要有：
 
-为了能够清楚的了解 APK 是如何生成的, 来看一下老版构建流程图
+* 应用模块用到的源代码、资源文件、aidl 接口文件等等
+* 依赖模块即源代码即第三方依赖库如：aar、jar、so 文件等等
+
+新版构建流程图只是描述了大概的过程，为了能够清楚的了解 APK 是如何生成的, 在来看一下老版构建流程图。
 
 **老版构建流程图**
 ![2019-03-22-15532697195669-w350](http://cdn.51git.cn/2020-02-12-2019-03-22-15532697195669.png)
 
-在了解 APK 生成的过程之前，我们需要了解一下图中各个工具的作用
 
-### 工具
+我们先来了解一下图中所示各个工具的作用。
 
 | 名字 | 功能 |
 | --- | --- |
@@ -39,6 +51,16 @@ APK 打包的内容主要有：应用模块也就是自己开发的用到的源�
 | Zipalign | 优化签名后的 APK，减少运行时所占用的内存 |
 
 ## 构建过程
+
+Apk 的构建过程大概分为如下几步：
+
+1. 使用 AAPT 工具生成 R.java 文件
+2. 所有的 AIDL 接口转化为 Java 接口
+3. 将 Java 代码编译成 Class 文件
+4. 将 Class 文件编译成 Dex 文件
+5. 打包生成 APK 文件
+6. 对 APK 文件签名
+7. 优化 APK 文件
 
 #### 1. 使用 AAPT 工具生成 R.java 文件
 
@@ -139,9 +161,25 @@ APK 文件大概可以分为两个部分：代码和资源, 代码部分通过 J
 
 在分析资源的编译和打包之前，我们需要了解一下 Android 都有哪些资源，其实 Android 资源大概分为两个部分：assets 和 res
 
+当我们使用 AAPT 对资源进行编译的时候，会采用两种模式 Deflate(压缩模式)/Stored(存储模式)，而具体使用模式，取决于文件后缀类型，AAPT 会对以下文件后缀类型的资源采用存储模式（即不会被压缩）
+
+```
+/* these formats are already compressed, or don't compress well */
+static const char* kNoCompressExt[] = {
+    ".jpg", ".jpeg", ".png", ".gif",
+    ".wav", ".mp2", ".mp3", ".ogg", ".aac",
+    ".mpg", ".mpeg", ".mid", ".midi", ".smf", ".jet",
+    ".rtttl", ".imy", ".xmf", ".mp4", ".m4a",
+    ".m4v", ".3gp", ".3gpp", ".3g2", ".3gpp2",
+    ".amr", ".awb", ".wma", ".wmv", ".webm", ".mkv"
+};
+```
+
+通过 `aapt l -v xxx.apk` 或 `unzip -l xxx.apk` 来查看 APK 内文件使用的什么模式
+
 #### 1. assets 资源
 
-assets 资源放在 assets 目录下，它里面保存一些原始的文件，可以以任何方式来进行组织，这些文件最终会原封不动的被打包进 APK 文件中，通过 AssetManager 来获取 asset 资源，代码如下
+assets 资源放在 assets 目录下，它里面保存一些原始的文件，可以以任何方式来进行组织，AAPT 会对指定文件后缀类型的资源进行压缩，其余的文件最终会原封不动的被打包进 APK 文件中，通过 AssetManager 来获取 asset 资源，代码如下
 
 ```
 AssetManager assetManager = context.getAssets();
@@ -220,36 +258,51 @@ Android 正是利用这个索引表根据资源 ID 进行资源的查找，为�
 * Jarsigner 是 JDK 提供的针对 JAR 包签名的通用工具
 * Apksigner 是 Google 官方提供的针对 Android APK 签名及验证的专用工具
 
-从Android 7.0 开始, 谷歌增加新签名方案 V2 Scheme (APK Signature)，但Android 7.0 以下版本, 只能用旧签名方案 V1 scheme (JAR signing)
+在 Android 11 以上使用 V4 签名，Android 9.0 以上使用 V3 签名，Android 7.0 开始使用 V2 签名，但在 Android 7.0 以下版本, 只能用旧签名方案 V1 签名
 
-####  V1(Jar Signature)签名:
+**V1 签名:**
 
-> 来自 JDK(Jarsigner)，对 ZIP 压缩包的每个文件进行验证, 签名后还能对压缩包修改(移动/重新压缩文件)，对 V1 签名的 APK/JAR 解压,在 META-INF 存放签名文件(MANIFEST.MF, CERT.SF, CERT.RSA), 其中 MANIFEST.MF 文件保存所有文件的 SHA1 指纹(除了 META-INF 文件), 由此可知: V1 签名是对压缩包中单个文件签名验证
+Android 7 以下使用 V1 签名，V1 签名会对 ZIP 压缩包的每个文件进行验证, 签名后还能对压缩包修改(移动/重新压缩文件)，对 V1 签名的 APK/JAR 解压,在 META-INF 存放签名文件(MANIFEST.MF, CERT.SF, CERT.RSA), 其中 MANIFEST.MF 文件保存所有文件的 SHA1 指纹(除了 META-INF 文件), 由此可知: V1 签名是对压缩包中单个文件签名验证
 
 
-####  V2(Full APK Signature)签名:
+**V2 签名:**
 
-> 来自 Google(apksigner), 对 ZIP 压缩包的整个文件验证, 签名后不能修改压缩包(包括 zipalign), 对 V2 签名的 APK 解压, 没有发现签名文件, 重新压缩后 V2 签名就失效, 由此可知: V2 签名是对整个 APK 签名验证
-
-创建发布密钥库，请参阅在 [Android Studio 中为应用签名](https://developer.android.com/studio/publish/app-signing.html?hl=zh-cn#studio)
-    
-####  总结
+Android 7 开始增加了 V2 签名，V2 签名会对 ZIP 压缩包的整个文件验证, 签名后不能修改压缩包(包括 zipalign), 对 V2 签名的 APK 解压, 没有发现签名文件, 重新压缩后 V2 签名就失效, 由此可知: V2 签名是对整个 APK 签名验证
    
+**V3 签名:**
+
+Android 9 增加了 V3 签名，V3 签名在 V2 的基础上，仍然采用检查整个压缩包的校验方式，支持 APK 密钥轮替，这使应用能够在 APK 更新过程中更改其签名密钥
+
+v3 签名新增的新块（attr） 会记录我们之前的签名信息以及新的签名信息，支持 APK 密钥轮替方案，来做签名的替换和升级。这意味着，只要旧签名证书在手，我们就可以通过它在新的 APK 文件中，更改签名。
+    
+需要注意的是：对于覆盖安装的情况，签名校验只支持升级，而不支持降级
+
+**V4 签名:**
+
+在 Android 11 之前，建议不要使用 APK 密钥轮替，在 Android 11 之后增加了 V4 签名，V4 签名将签名存储在单独的 <apk name>.apk.idsig 文件中。v4 签名需要 v2 或 v3 签名作为补充。
+
+关于签名更多内容，会在后续文章内介绍。
+
+**总结:**
+
 * V1 签名是对压缩包中单个文件签名验证
 * V2 签名是对整个 APK 签名验证
 * zipalign 可以在 V1 签名后执行
 * zipalign 不能在 V2 签名后执行,只能在 V2 签名之前执行
 * V2 签名更安全(不能修改压缩包)
 * V2 签名验证时间更短(不需要解压验证), 因而安装速度加快
-
-注意: apksigner 工具默认同时使用 V1 和 V2 签名,以兼容 Android 7.0 以下版本
+* apksigner 工具默认同时使用 V1 和 V2 签名, 以兼容 Android 7.0 以下版本
+* Android 7 以下使用 V1 签名
+* Android 7 开始增加了 V2 签名  
+* Android 9 增加了 V3 签名
+* Android 11 之后增加了 V4 签名
+* V3 签名 和 V4 签名 目前只能在 Google Play 上使用
 
 ## 参考文献
 
 * [Google的 Apk 构建流程](https://developer.android.com/studio/build/index.html?hl=zh-cn#build-process)
 * [Android Studio 中为应用签名](https://developer.android.com/studio/build/index.html?hl=zh-cn#build-process)
 * [AAPT2](https://developer.android.com/studio/command-line/aapt2?hl=zh-cn)
-
 
 ## 结语
 
